@@ -2,47 +2,34 @@ require('./config/config');
 
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
- 
-// parse application/json
 app.use(bodyParser.json())
- 
-app.get('/usuario', function (req, res) {
-    res.json('get Usuario')
-});
 
-app.post('/usuario', function (req, res) {
+app.use(require('./routes/usuario'));
 
-    let body = req.body;
+    // mongoose.connect(
+    // 'mongodb://localhost:27017/cafe',
+    // { useNewUrlParser: true,
+    //   useUnifiedTopology: true 
+    // });
 
-    if( body.nombre === undefined ){
-        res.status(400).json({
-            success: true,
-            mensaje: 'El nombre es necesario'
-        });
-    }else{
-        res.json({
-            persona: body
-        });
-    }
-
-});
-
-app.put('/usuario/:id', function (req, res) {
-
-    let id = req.params.id;
-
-    res.json({
-        id
-    });
-});
-
-app.delete('/usuario', function (req, res) {
-    res.json('get Usuario')
-});
+    mongoose.connect(process.env.urlDB, {
+        useNewUrlParser: true , 
+        useUnifiedTopology: true}
+    ).then(() => {
+        console.log('mongoDB is connected');
+        console.log(mongoose.connection.readyState);
+        // 0 = disconnected
+        // 1 = connected
+        // 2 = connecting
+        // 3 = disconnecting
+    })
+    .catch((err) => {
+        throw err
+    })
  
 app.listen(process.env.port, () => {
     console.log('Escuchando el puerto',process.env.port);
