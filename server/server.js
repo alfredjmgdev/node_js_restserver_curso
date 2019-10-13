@@ -5,10 +5,11 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(require('./routes/usuario'));
+// Configuracion global de rutas
+app.use(require('./routes/index.js'));
 
     // mongoose.connect(
     // 'mongodb://localhost:27017/cafe',
