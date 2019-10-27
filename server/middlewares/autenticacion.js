@@ -39,6 +39,7 @@ let verificaAdmin_Role = ( req, res, next ) => {
     }else{
 
         return res.status(403).json({
+            rol: usuario.email,
             ok: false,
             err:{
                 message: 'El usuario no es administrador'
